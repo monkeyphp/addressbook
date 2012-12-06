@@ -146,7 +146,7 @@ class AddressBook
 
     /**
      * Set the title property of the AddressBook
-     * 
+     *
      * @param string $title The value to set the title property to
      *
      * @access public
@@ -167,13 +167,36 @@ class AddressBook
         return $this;
     }
 
+    /**
+     * Return the AddressBook description
+     *
+     * @access public
+     * @return string|null
+     */
     public function getDescription()
     {
         return $this->description;
     }
 
-    public function setDescription($description)
+    /**
+     * Set the description property of the AddressBook
+     *
+     * @param string $description The value to set the description property to
+     *
+     * @access public
+     * @throws \InvalidArgumentException
+     * @return \AddressBook\Model\Entity\AddressBook
+     */
+    public function setDescription($description = null)
     {
+        if (! is_null($description)) {
+            if (! is_string($description)) {
+                throw new \InvalidArgumentException(__METHOD__ . ' expects a string');
+            }
+            if (strlen($description) > 1000) {
+                throw new \InvalidArgumentException(__METHOD__ . ' expects a string no longer than 1000 characters');
+            }
+        }
         $this->description = $description;
         return $this;
     }
@@ -200,13 +223,40 @@ class AddressBook
         return $this;
     }
 
+    /**
+     * Return a DateTime representing the last modified property of the AddressBook
+     *
+     * @access public
+     * @return \DateTime
+     */
     public function getModified()
     {
         return $this->modified;
     }
 
-    public function setModified(DateTime $modified)
+    /**
+     * Set the modified property of the AddressBook
+     *
+     * The method will attempt to convert any argument into a DateTime instance,
+     * throwing an InvalidArgumentException if it fails
+     *
+     * @param mixed $modified The value to set the modified property to
+     *
+     * @access public
+     * @throws \InvalidArgumentException
+     * @return \AddressBook\Model\Entity\AddressBook
+     */
+    public function setModified($modified = null)
     {
+        if (! is_null($modified)) {
+            if (! $modified instanceof \DateTime) {
+                try {
+                    $modified = new \DateTime($modified);
+                } catch(\Exception $exception) {
+                    throw new \InvalidArgumentException(__METHOD__ . ' expects a DateTime instance');
+                }
+            }
+        }
         $this->modified = $modified;
         return $this;
     }
